@@ -11,6 +11,8 @@ import map from 'lodash.map'
 
 import moment from 'moment'
 
+import $ from 'jquery'
+
 import 'jquery-datetimepicker/build/jquery.datetimepicker.full'
 import 'jquery-datetimepicker/jquery.datetimepicker.css'
 
@@ -91,8 +93,12 @@ export default class DateTimePicker extends Component {
   componentWillUpdate (nextProps, nextState) {
     if (this.state.value !== nextState.value) {
       const nextValue = moment(nextState.value)
-      this.$input.datetimepicker({value: nextValue.toDate()})
+      this.setOptions({ value: nextValue.toDate() })
     }
+  }
+
+  setOptions (options) {
+    this.$input.datetimepicker(options)
   }
 
   _initPlugin () {
@@ -113,10 +119,11 @@ export default class DateTimePicker extends Component {
       },
     })
     const $input = $(findDOMNode(this.input))
+    const handlers = fromPairs(map(HANDLERS, h => [h, this.buildHandler(this.props[h])]))
     const _options = {
       ...this.defaultOptions,
+      ...handlers,
       ...options,
-      ...fromPairs(map(HANDLERS), h => [h, this.buildHandler(this.props[h])])
     }
 
     this.$input = $input.datetimepicker({
@@ -138,9 +145,10 @@ export default class DateTimePicker extends Component {
     if (!handler) {
       return undefined
     }
+    const _self = this
     return function (currentTime, $input) {
       if (handler) {
-        handler(currentTime, this, $input)
+        handler(currentTime, _self, this)
       }
     }
   }

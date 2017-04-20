@@ -6,9 +6,10 @@
   "author": "apkawa <apkawa@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "babel --out-dir lib src",
-    "watch": "babel --watch --out-dir lib src",
-    "lint": "eslint src",
+    "prepublish": "npm build",
+    "build": "babel --out-dir lib src  --source-maps inline",
+    "watch": "babel --watch --out-dir lib src --source-maps inline",
+    "lint": "eslint src"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
