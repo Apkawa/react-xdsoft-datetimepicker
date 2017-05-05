@@ -80,6 +80,10 @@ export default class DateTimePicker extends Component {
     value: this.props.value,
   }
 
+  static setLocale(locale) {
+    $.datetimepicker.setLocale(locale)
+  }
+
   componentDidMount () {
     this._initPlugin()
   }
@@ -102,12 +106,11 @@ export default class DateTimePicker extends Component {
   }
 
   _initPlugin () {
-    const { options, datepicker, timepicker, defaultValue } = this.props
+    const { options, datepicker, timepicker, defaultValue, lang } = this.props
     const { value } = this.state
 
     let inputValue = defaultValue || value
 
-    $.datetimepicker.setLocale('ru')
     $.datetimepicker.setDateFormatter({
       parseDate(date, _format) {
         const d = moment(date, _format)
@@ -125,7 +128,7 @@ export default class DateTimePicker extends Component {
       ...handlers,
       ...options,
     }
-
+    $input.datetimepicker('destroy')
     this.$input = $input.datetimepicker({
       ..._options,
       format: this.getDisplayFormat(),
@@ -137,8 +140,14 @@ export default class DateTimePicker extends Component {
   }
 
   onChangeHandler (value) {
-    this.setState({ value: moment(value) })
-    this.props.onChange(moment(value))
+    value = moment(value, true)
+    if (!value.isValid()) {
+      value = null
+    }
+    this.setState({ value: value })
+    if (this.props.onChange) {
+      this.props.onChange(value)
+    }
   }
 
   buildHandler (handler) {

@@ -4,7 +4,6 @@ var gulp = require('gulp')
 var gutil = require('gulp-util')
 
 var initGulpTasks = require('gulp-frontend-tools')
-// var initGulpTasks = require('/home/apkawa/source/gulp-frontend-tools');
 
 var ENV = 'development' //production
 if (gutil.env.production) {

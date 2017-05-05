@@ -33,7 +33,9 @@ class ExampleDatetimeStates extends React.Component {
   }
 }
 
+
 function Example () {
+  DateTimePicker.setLocale('ru')
   return (
     <div>
 
@@ -44,6 +46,9 @@ function Example () {
       <DateTimePicker defaultValue="2017-12-25 23:55"/>
       <DateTimePicker defaultValue="2017-12-25 23:55" datepicker={false}/>
       <DateTimePicker defaultValue="2017-12-25 23:55" timepicker={false}/>
+
+      <h1>Locale</h1>
+      <DateTimePicker/>
 
       <h1>More interactions</h1>
       <ExampleDatetimeStates/>
