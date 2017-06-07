@@ -53,6 +53,12 @@ function Example () {
       <h1>More interactions</h1>
       <ExampleDatetimeStates/>
 
+      <h1>Format</h1>
+
+      <DateTimePicker defaultValue="" datepicker={false} format="HH:mm" options={{formatTime: 'HH:mm', formatDate: false}} />
+      <DateTimePicker defaultValue="2017-12-25 23:55" timepicker={false} format="DD.MM.YYYY HH:mm"/>
+      <DateTimePicker defaultValue="2017-12-25 23:55" format="DD.MM.YYYY HH:mm"/>
+
     </div>
   )
 }
