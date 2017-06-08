@@ -6,15 +6,15 @@ import DateTimePicker from 'react-xdsoft-datetimepicker'
 
 class ExampleDatetimeStates extends React.Component {
   state = {
-    value: null,
+    value: null
   }
 
   onChange = (value) => {
-    this.setState({ value: value })
+    this.setState({value})
   }
 
   render () {
-    const { value } = this.state
+    const {value} = this.state
     return (
       <div>
         <DateTimePicker defaultValue="2015-05-25 05:05"
@@ -25,14 +25,13 @@ class ExampleDatetimeStates extends React.Component {
           {value && value.toString()}
           </pre>
 
-        <button onClick={() => this.setState({ value: new Date() })}>Set now</button>
+        <button onClick={() => this.setState({value: new Date()})}>Set now</button>
 
       </div>
     )
 
   }
 }
-
 
 function Example () {
   DateTimePicker.setLocale('ru')
@@ -55,7 +54,8 @@ function Example () {
 
       <h1>Format</h1>
 
-      <DateTimePicker defaultValue="" datepicker={false} format="HH:mm" options={{formatTime: 'HH:mm', formatDate: false}} />
+      <DateTimePicker defaultValue="" datepicker={false} format="HH:mm"
+                      options={{formatTime: 'HH:mm', formatDate: false}}/>
       <DateTimePicker defaultValue="2017-12-25 23:55" timepicker={false} format="DD.MM.YYYY HH:mm"/>
       <DateTimePicker defaultValue="2017-12-25 23:55" format="DD.MM.YYYY HH:mm"/>
 

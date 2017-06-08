@@ -92,7 +92,7 @@ export default class DateTimePicker extends Component {
 
   componentWillReceiveProps (newProps) {
     if (this.props.value !== newProps.value) {
-      this.setState({value: newProps.value})
+      this.setValue(newProps.value)
     }
   }
 
@@ -146,9 +146,9 @@ export default class DateTimePicker extends Component {
     if (!value.isValid()) {
       value = null
     }
-    this.setState({value})
+    this.setValue(value)
     if (this.props.onChange) {
-      this.props.onChange(value)
+      this.props.onChange(moment(this.state.value))
     }
   }
 
@@ -203,6 +203,10 @@ export default class DateTimePicker extends Component {
       return ISO_TIME_FORMAT
     }
 
+  }
+
+  setValue (value) {
+    this.setState({value: value && moment(value, this.getValueFormat()).toDate()})
   }
 
   getValue () {
