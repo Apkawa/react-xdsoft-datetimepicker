@@ -84,6 +84,21 @@ export default class DateTimePicker extends Component {
 
   static setLocale (locale) {
     $.datetimepicker.setLocale(locale)
+    DateTimePicker.setFormatter()
+  }
+
+  static setFormatter (formatter) {
+    $.datetimepicker.setDateFormatter({
+      parseDate (date, _format) {
+        const d = moment(date, _format)
+        return d.isValid() ? d.toDate() : false
+      },
+
+      formatDate (date, _format) {
+        return moment(date).format(_format)
+      },
+      ...formatter
+    })
   }
 
   componentDidMount () {
@@ -113,16 +128,7 @@ export default class DateTimePicker extends Component {
 
     const inputValue = defaultValue || value
 
-    $.datetimepicker.setDateFormatter({
-      parseDate(date, _format) {
-        const d = moment(date, _format)
-        return d.isValid() ? d.toDate() : false
-      },
-
-      formatDate(date, _format) {
-        return moment(date).format(_format)
-      }
-    })
+    DateTimePicker.setFormatter
     const $input = $(findDOMNode(this.input))
     const handlers = fromPairs(map(HANDLERS, h => [h, this.buildHandler(this.props[h])]))
     const _options = {
