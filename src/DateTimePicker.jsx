@@ -127,6 +127,7 @@ export default class DateTimePicker extends Component {
   _initPlugin () {
     const {options, datepicker, timepicker, defaultValue, lang} = this.props
     const {value} = this.state
+    this.state.inputValue = this.getValue() || ''
 
     const inputValue = defaultValue || value
 
@@ -149,12 +150,13 @@ export default class DateTimePicker extends Component {
   }
 
   onChangeInput = (e) => {
+    this.setState({inputValue: e.target.value})
     this.onChangeHandler(e.target.value)
   }
 
   onChangeHandler = (value) => {
     let isInvalid = false
-    let momentValue = null;
+    let momentValue = null
     if (value) {
       try {
         momentValue = moment(value, true)
@@ -170,9 +172,11 @@ export default class DateTimePicker extends Component {
 
     this.setValue(momentValue)
     this.setState({isInvalid})
+
     if (this.props.onChange) {
-      this.props.onChange(moment(this.state.value))
+      this.props.onChange(momentValue)
     }
+
   }
 
   buildHandler (handler) {
@@ -226,12 +230,17 @@ export default class DateTimePicker extends Component {
     }
   }
 
-  setValue (value) {
-    this.setState({value: value && moment(value, this.getValueFormat()).toDate()})
+  setValue (momentValue) {
+    const value = momentValue && moment(momentValue, this.getValueFormat()).toDate()
+    this.setState(({inputValue}) => (
+      {
+        inputValue: momentValue ? this.getValue(momentValue) : inputValue,
+        value
+      }
+    ))
   }
 
-  getValue () {
-    const {value} = this.state
+  getValue (value = this.state.value) {
     if (value) {
       return moment(value, this.getValueFormat()).format(this.getDisplayFormat())
     }
@@ -254,7 +263,7 @@ export default class DateTimePicker extends Component {
     }
     return (
       React.cloneElement(inputEl,
-        {ref, placeholder, value: this.getValue(), onChange: this.onChangeInput})
+        {ref, placeholder, value: this.state.inputValue, onChange: this.onChangeInput})
     )
   }
 

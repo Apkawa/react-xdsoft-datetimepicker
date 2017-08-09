@@ -1,6 +1,6 @@
 {
   "name": "react-xdsoft-datetimepicker",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "lib/DateTimePicker.js",
   "repository": "https://github.com/Apkawa/react-xdsoft-datetimepicker",
   "author": "apkawa <apkawa@gmail.com>",
