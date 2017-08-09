@@ -30,7 +30,7 @@
     "comma-dangle": 0,
     "no-console": 0,
     "no-alert": 0,
-    "semi": 0,
+    "semi": 0
   },
   "plugins": [
     "babel",

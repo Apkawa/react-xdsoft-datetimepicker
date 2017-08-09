@@ -1,6 +1,6 @@
 {
   "name": "react-xdsoft-datetimepicker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "lib/DateTimePicker.js",
   "repository": "https://github.com/Apkawa/react-xdsoft-datetimepicker",
   "author": "apkawa <apkawa@gmail.com>",
@@ -10,7 +10,7 @@
     "build": "babel --out-dir lib src  --source-maps inline",
     "watch": "babel --watch --out-dir lib src --source-maps inline",
     "lint": "eslint src",
-    "examples:serve": "concurrently 'yarn watch' 'cd examples;yarn serve'"
+    "examples:serve": "concurrently 'yarn && yarn watch' 'cd examples && yarn && yarn serve'"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

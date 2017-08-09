@@ -69,7 +69,8 @@ export default class DateTimePicker extends Component {
     displayDateFormat: 'DD.MM.YYYY',
     displayTimeFormat: 'HH:mm',
     displayDateTimeFormat: 'DD.MM.YYYY HH:mm',
-    value_format: undefined
+    value_format: undefined,
+    onChange: undefined
   }
 
   defaultOptions = {
@@ -79,7 +80,8 @@ export default class DateTimePicker extends Component {
   }
 
   state = {
-    value: this.props.value
+    value: this.props.value,
+    isInvalid: false
   }
 
   static setLocale (locale) {
@@ -128,7 +130,6 @@ export default class DateTimePicker extends Component {
 
     const inputValue = defaultValue || value
 
-    DateTimePicker.setFormatter
     const $input = $(findDOMNode(this.input))
     const handlers = fromPairs(map(HANDLERS, h => [h, this.buildHandler(this.props[h])]))
     const _options = {
@@ -142,17 +143,33 @@ export default class DateTimePicker extends Component {
       format: this.getDisplayFormat(),
       datepicker,
       timepicker,
-      onChangeDateTime: this.onChangeHandler.bind(this),
+      onChangeDateTime: this.onChangeHandler,
       value: inputValue // && moment(inputValue).toDate()
     })
   }
 
-  onChangeHandler (value) {
-    value = moment(value, true)
-    if (!value.isValid()) {
-      value = null
+  onChangeInput = (e) => {
+    this.onChangeHandler(e.target.value)
+  }
+
+  onChangeHandler = (value) => {
+    let isInvalid = false
+    let momentValue = null;
+    if (value) {
+      try {
+        momentValue = moment(value, true)
+        if (!momentValue.isValid()) {
+          momentValue = null
+          isInvalid = true
+        }
+      } catch (e) {
+        momentValue = null
+        isInvalid = true
+      }
     }
-    this.setValue(value)
+
+    this.setValue(momentValue)
+    this.setState({isInvalid})
     if (this.props.onChange) {
       this.props.onChange(moment(this.state.value))
     }
@@ -197,7 +214,6 @@ export default class DateTimePicker extends Component {
 
     if (value_format) {
       return value_format
-
     }
     if (datepicker && timepicker) {
       return ISO_DATETIME_FORMAT
@@ -208,7 +224,6 @@ export default class DateTimePicker extends Component {
     if (timepicker) {
       return ISO_TIME_FORMAT
     }
-
   }
 
   setValue (value) {
@@ -238,13 +253,15 @@ export default class DateTimePicker extends Component {
       inputEl = (<input type="text"/>)
     }
     return (
-      React.cloneElement(inputEl, {ref, placeholder, value: this.getValue()})
+      React.cloneElement(inputEl,
+        {ref, placeholder, value: this.getValue(), onChange: this.onChangeInput})
     )
   }
 
   render () {
+    const {isInvalid} = this.state
     return (
-      <div className="datetimepicker">
+      <div className={`datetimepicker ${isInvalid ? 'invalid' : 'valid'}`}>
         {this.renderInput()}
       </div>
     )
