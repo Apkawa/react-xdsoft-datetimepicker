@@ -4744,13 +4744,13 @@ jquery-chained@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/jquery-chained/-/jquery-chained-1.0.1.tgz#566b3d91a3399707cfe63f663ff6e2b3fac3811f"
 
-jquery-datetimepicker@^2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/jquery-datetimepicker/-/jquery-datetimepicker-2.5.4.tgz#01c3cd1e9c2b51fc030687ac86bdf407a50bec6f"
+jquery-datetimepicker@2.5.11:
+  version "2.5.11"
+  resolved "https://registry.yarnpkg.com/jquery-datetimepicker/-/jquery-datetimepicker-2.5.11.tgz#25441be4da358b373ef321bda78f72bee9e54587"
   dependencies:
     jquery ">= 1.7.2"
     jquery-mousewheel ">= 3.1.13"
-    php-date-formatter ">= 1.3.3"
+    php-date-formatter "^1.3.4"
 
 "jquery-mousewheel@>= 3.1.13":
   version "3.1.13"
@@ -5148,6 +5148,10 @@ lodash.flatten@^4.2.0:
 lodash.frompairs@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.frompairs/-/lodash.frompairs-4.0.1.tgz#bc4e5207fa2757c136e573614e9664506b2b1bd2"
+
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
 
 lodash.isarguments@^3.0.0:
   version "3.1.0"
@@ -6232,7 +6236,7 @@ performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
-"php-date-formatter@>= 1.3.3":
+php-date-formatter@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/php-date-formatter/-/php-date-formatter-1.3.4.tgz#09a15ae0766ba0beb1900c27c1ec319ef2e4563e"
 
@@ -6788,12 +6792,15 @@ react-transform-hmr@^1.0.1:
     react-proxy "^1.1.7"
 
 "react-xdsoft-datetimepicker@file:../":
-  version "0.0.1"
+  version "0.0.7"
   dependencies:
-    babel-core "^6.24.1"
-    jquery "2"
-    jquery-datetimepicker "^2.5.4"
+    jquery "^3.2.1"
+    jquery-datetimepicker "2.5.11"
+    lodash.frompairs "^4.0.1"
+    lodash.get "^4.4.2"
+    lodash.map "^4.6.0"
     moment "^2.18.1"
+    prop-types "^15.5.8"
     react "^15.5.4"
     react-dom "^15.5.4"
 

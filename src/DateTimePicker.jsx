@@ -8,6 +8,7 @@ import { findDOMNode } from 'react-dom'
 
 import fromPairs from 'lodash.frompairs'
 import map from 'lodash.map'
+import _get from 'lodash.get'
 
 import moment from 'moment'
 
@@ -38,6 +39,19 @@ const VALUE_PROP_TYPE = PropTypes.oneOfType([
   PropTypes.instanceOf(moment),
   PropTypes.number
 ])
+
+export function buildAllowDateTimeMap (datetimes, format) {
+  const datetimes_map = {}
+  for (let dt of datetimes) {
+    const m_dt = moment(dt, format)
+    const isoDate = m_dt.toISOString().split(/T/)[0]
+    if (!datetimes_map[isoDate]) {
+      datetimes_map[isoDate] = []
+    }
+    datetimes_map[isoDate].push(m_dt)
+  }
+  return datetimes_map
+}
 
 export default class DateTimePicker extends Component {
   static propTypes = {
@@ -133,14 +147,44 @@ export default class DateTimePicker extends Component {
 
     const $input = $(findDOMNode(this.input))
     const handlers = fromPairs(map(HANDLERS, h => [h, this.buildHandler(this.props[h])]))
-    const _options = {
+
+    const self = this
+    let lastAllowTimes
+    const pickerOptions = {
       ...this.defaultOptions,
       ...handlers,
-      ...options
+      ...options,
+      onGenerate: (ct, $i) => {
+        if (handlers.onGenerate) {
+          handlers.onGenerate(ct, $i)
+        }
+        if (self._allowDateTimeMap) {
+          const dt = moment(ct).format(ISO_DATE_FORMAT)
+          const times = self._allowDateTimeMap[dt]
+          if (times) {
+            let allowTimes = times.map(t => t.format(pickerOptions.formatTime))
+            const cmpTimes = allowTimes.sort().join(',');
+            if (lastAllowTimes !== cmpTimes) {
+              lastAllowTimes = cmpTimes
+              this.setOptions({
+                allowTimes
+              })
+            }
+          }
+        }
+      }
     }
+    const allowDateTimes = _get(pickerOptions, 'allowDateTimes')
+    if (allowDateTimes) {
+      this._allowDateTimeMap = buildAllowDateTimeMap(allowDateTimes, ISO_DATETIME_FORMAT)
+      pickerOptions.allowDates = allowDateTimes.map(
+        dt => moment(dt, ISO_DATETIME_FORMAT).format(pickerOptions.formatDate)
+      )
+    }
+
     $input.datetimepicker('destroy')
     this.$input = $input.datetimepicker({
-      ..._options,
+      ...pickerOptions,
       format: this.getDisplayFormat(),
       datepicker,
       timepicker,
